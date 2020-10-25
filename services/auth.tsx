@@ -11,7 +11,7 @@ export async function signIn(email: string, password: string): Promise<any> {
 	}).catch((error) => {
 		console.error('Error:', error);
 	});
-	return response.json();
+	return response;
 }
 
 export async function signInWithGoogle(): Promise<any> {
@@ -24,7 +24,7 @@ export async function signInWithGoogle(): Promise<any> {
 	}).catch((error) => {
 		console.error('Error:', error);
 	});
-	return response.json();
+	return response;
 }
 
 export async function signUp(username: string, email: string, password: string): Promise<any> {
@@ -43,5 +43,5 @@ export async function signUp(username: string, email: string, password: string):
 	}).catch((error) => {
 		console.error('Error:', error);
 	});
-	return response.json();
+	return response;
 }
