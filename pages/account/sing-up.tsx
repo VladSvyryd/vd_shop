@@ -38,18 +38,13 @@ export default function SignUp() {
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
 
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
 		if (!email || !password || !username) return;
-		signUp(username, email, password)
-			.then((user: any) => {
-				console.log(user);
-				if (user) {
-					setCookie('vd_shop_jwt', user.jwt, 1);
-				}
-			})
-			.then(() => {
-				console.log(getCookie('vd_shop_jwt'));
-			});
+		let user = await signUp(username, email, password)
+		if (user) {
+			setCookie('vd_shop_jwt', user.jwt, 1);
+		}
+		console.log(getCookie('vd_shop_jwt'));
 	}, []);
 
 	return (

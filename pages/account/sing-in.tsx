@@ -44,32 +44,21 @@ export default function SignIn() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleGoogleAuth = useCallback(() => {
-		signInWithGoogle()
-			.then((user: any) => {
-				if (user) {
-					setCookie('vd_shop_jwt', user.jwt, 1);
-				}
-			})
-			.then(() => {
-				console.log(getCookie('vd_shop_jwt'));
-			});
+	const handleGoogleAuth = useCallback(async () => {
+		let user = signInWithGoogle();
+		if (user) {
+			setCookie('vd_shop_jwt', user.jwt, 1);
+		}
+		console.log(getCookie('vd_shop_jwt'));
 	}, []);
 
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
 		if (!email || !password) return;
-		signIn(email, password)
-			.then((user: any) => {
-				if (user) {
-					setCookie('vd_shop_jwt', user.jwt, 1);
-				}
-			})
-			.then(() => {
-				console.log(getCookie('vd_shop_jwt'));
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+		let user = await signIn(email, password)
+		if (user) {
+			setCookie('vd_shop_jwt', user.jwt, 1);
+		}
+		console.log(getCookie('vd_shop_jwt'));
 	}, []);
 
 	return (
