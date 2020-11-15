@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +16,10 @@ import Container from '@material-ui/core/Container';
 import { signIn, signInWithGoogle } from '../../services/auth';
 import { setCookie, getCookie } from '../../services/cookie';
 import Copyright from '../../components/Copyright';
+import { addUser } from '../../actions/userAction'
+import { User } from '../../interfaces/userTypes'
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducer/root';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -38,25 +43,29 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(3),
 	},
 }));
-
 export default function SignIn() {
+	const dispatch = useDispatch()
 	const classes = useStyles();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	let [email, setEmail] = useState('');
+	let [password, setPassword] = useState('');
+	let user = useSelector((state: RootState) => console.log(state));
 
 	const handleGoogleAuth = useCallback(async () => {
-		let user = signInWithGoogle();
+		let user = await signInWithGoogle();
 		if (user) {
 			setCookie('vd_shop_jwt', user.jwt, 1);
 		}
 		console.log(getCookie('vd_shop_jwt'));
+	
 	}, []);
 
 	const handleSubmit = useCallback(async () => {
 		if (!email || !password) return;
-		let user = await signIn(email, password)
-		if (user) {
-			setCookie('vd_shop_jwt', user.jwt, 1);
+		let data = await signIn(email, password);
+		let user: User = {email: data.user.email, username: data.user.username};
+		if (data) {
+			dispatch(addUser(user));
+			setCookie('vd_shop_jwt', data.jwt, 1);
 		}
 		console.log(getCookie('vd_shop_jwt'));
 	}, []);

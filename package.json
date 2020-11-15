@@ -5,10 +5,15 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
+    "@types/react-redux": "^7.1.11",
     "clsx": "latest",
     "next": "latest",
+    "next-redux-wrapper": "^6.0.2",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
     "dev": "next",
