@@ -19,7 +19,7 @@ import Copyright from '../../components/Copyright';
 import { addUser } from '../../actions/userAction'
 import { User } from '../../interfaces/userTypes'
 import { useSelector } from 'react-redux';
-import { RootState } from '../reducer/root';
+import { RootState } from '../../reducer/root';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
