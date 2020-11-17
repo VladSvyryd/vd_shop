@@ -1,4 +1,4 @@
-import { User, ADD_USER, DELETE_USER, UserActionTypes } from '../interfaces/userTypes'
+import { User, ADD_USER, DELETE_USER, UserActionTypes } from '../../interfaces/userTypes'
 
 // TypeScript infers that this function is returning AddUserAction
 export function addUser(newUser: User): UserActionTypes {

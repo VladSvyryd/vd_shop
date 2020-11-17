@@ -8,9 +8,9 @@ import ProTip from '../components/ProTip';
 import Link from '../components/Link';
 import Copyright from '../components/Copyright';
 import Layout from '../components/Layout';
-import { RootState } from '../reducer/root';
-import { wrapper } from '../store/store';
-import { addUser } from '../actions/userAction'
+import { RootState } from '../redux/reducer/root';
+import { wrapper } from '../redux/store';
+import { addUser } from '../redux/actions/userAction'
 
 function Index() {
   let user = useSelector((state: RootState) => state?.user?.user);

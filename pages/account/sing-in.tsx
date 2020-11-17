@@ -17,10 +17,10 @@ import Container from '@material-ui/core/Container';
 import { signIn, signInWithGoogle } from '../../services/auth';
 import { setCookie, getCookie } from '../../services/cookie';
 import Copyright from '../../components/Copyright';
-import { addUser } from '../../actions/userAction';
+import { addUser } from '../../redux/actions/userAction';
 import { User } from '../../interfaces/userTypes';
-import { RootState } from '../../reducer/root';
-import { wrapper } from '../../store/store';
+import { RootState } from '../../redux/reducer/root';
+import { wrapper } from '../../redux/store';
 
 
 const useStyles = makeStyles((theme) => ({

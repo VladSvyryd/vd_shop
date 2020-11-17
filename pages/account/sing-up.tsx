@@ -13,7 +13,7 @@ import Copyright from '../../components/Copyright'
 import { signUp } from '../../services/auth'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 import { useRouter } from 'next/router'
-import { addUser } from '../../actions/userAction'
+import { addUser } from '../../redux/actions/userAction'
 import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
