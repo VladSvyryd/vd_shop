@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { connect, useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,10 +17,11 @@ import Container from '@material-ui/core/Container';
 import { signIn, signInWithGoogle } from '../../services/auth';
 import { setCookie, getCookie } from '../../services/cookie';
 import Copyright from '../../components/Copyright';
-import { addUser } from '../../actions/userAction'
-import { User } from '../../interfaces/userTypes'
-import { useSelector } from 'react-redux';
+import { addUser } from '../../actions/userAction';
+import { User } from '../../interfaces/userTypes';
 import { RootState } from '../../reducer/root';
+import { wrapper } from '../../store/store';
+
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -43,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(3),
 	},
 }));
-export default function SignIn() {
-	const dispatch = useDispatch()
+
+function SignIn() {
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	let [email, setEmail] = useState('');
 	let [password, setPassword] = useState('');
-	let user = useSelector((state: RootState) => console.log(state));
 
 	const handleGoogleAuth = useCallback(async () => {
 		let user = await signInWithGoogle();
@@ -56,13 +58,12 @@ export default function SignIn() {
 			setCookie('vd_shop_jwt', user.jwt, 1);
 		}
 		console.log(getCookie('vd_shop_jwt'));
-	
 	}, []);
 
 	const handleSubmit = useCallback(async () => {
 		if (!email || !password) return;
 		let data = await signIn(email, password);
-		let user: User = {email: data.user.email, username: data.user.username};
+		let user: User = { email: data.user.email, username: data.user.username };
 		if (data) {
 			dispatch(addUser(user));
 			setCookie('vd_shop_jwt', data.jwt, 1);
@@ -146,3 +147,16 @@ export default function SignIn() {
 		</Container>
 	);
 }
+
+export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+	let user = { email: 'from server', username: 'from server' };
+	store.dispatch(addUser(user));
+});
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		addUser: bindActionCreators(addUser, dispatch),
+	};
+};
+
+export default connect((state: RootState) => state, mapDispatchToProps)(SignIn);

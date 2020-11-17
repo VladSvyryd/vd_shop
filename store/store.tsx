@@ -1,7 +1,11 @@
-import { createStore, applyMiddleware } from 'redux';
 import { useMemo } from 'react';
-import rootReducer from '../reducer/root';
+import { createStore, applyMiddleware } from 'redux';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
+import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createWrapper } from 'next-redux-wrapper';
+import rootReducer from '../reducer/root';
 
 let store: any;
 
@@ -9,8 +13,23 @@ const initialState = {
 	user: null,
 };
 
-function initStore(preloadedState:any = initialState) {
-	return createStore(rootReducer, preloadedState, composeWithDevTools(applyMiddleware()));
+const persistConfig = {
+	key: 'primary',
+	storage,
+	whitelist: ['user'], // place to select which state you want to persist
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const bindMiddleware = (middleware: any) => {
+	if (process.env.NODE_ENV !== 'production') {
+		return composeWithDevTools(applyMiddleware(...middleware));
+	}
+	return applyMiddleware(...middleware);
+};
+
+function initStore(preloadedState: any = initialState) {
+	return createStore(persistedReducer, preloadedState, bindMiddleware([thunkMiddleware]));
 }
 
 export const initializeStore = (preloadedState: any) => {
@@ -39,3 +58,5 @@ export function useStore(initialState: any) {
 	const store = useMemo(() => initializeStore(initialState), [initialState]);
 	return store;
 }
+
+export const wrapper = createWrapper(initStore);

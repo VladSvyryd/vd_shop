@@ -12,7 +12,7 @@ export function userReducer(state = initialState, action: UserActionTypes): User
 			};
 		case DELETE_USER:
 			return {
-				user: null,
+				user: action.payload,
 			};
 		default:
 			return state;
