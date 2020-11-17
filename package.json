@@ -6,6 +6,7 @@
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "@types/react-redux": "^7.1.11",
+    "axios": "^0.21.0",
     "clsx": "latest",
     "next": "latest",
     "next-redux-wrapper": "^6.0.2",

@@ -35,3 +35,8 @@ yarn-error.log*
 
 # storybook
 .storybook
+
+# prettierrc
+.prettierrc.js
+
+cloud_sql_proxy.exe

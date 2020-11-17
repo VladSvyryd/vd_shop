@@ -81,6 +81,8 @@ function SignIn() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
+				{email}
+				{password}
 				<form className={classes.form} noValidate>
 					<TextField
 						variant="outlined"
@@ -94,6 +96,9 @@ function SignIn() {
 						autoComplete="email"
 						autoFocus
 						onChange={(e) => setEmail(e.target.value)}
+						// InputProps={{
+						// 	onChange:(e)=>setEmail(e.target.value)
+						// }}
 					/>
 					<TextField
 						variant="outlined"

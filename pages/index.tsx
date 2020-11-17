@@ -13,7 +13,7 @@ import { wrapper } from '../store/store';
 import { addUser } from '../actions/userAction'
 
 function Index() {
-  let user = useSelector((state: RootState) => state.user.user);
+  let user = useSelector((state: RootState) => state?.user?.user);
 	let text;
 	if (user) {
 		text = <p>Hi {user.username}!</p>;
@@ -40,8 +40,8 @@ function Index() {
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-  // let user = {email: "data.user.email", username: "data.user.username"};
-  // store.dispatch(addUser(user));
+  let user = {email: "data.user.email", username: "data.user.username"};
+  store.dispatch(addUser(user));
 })
 
 const mapDispatchToProps = (dispatch:any) => {
