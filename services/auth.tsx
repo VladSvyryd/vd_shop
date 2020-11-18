@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { API } from './'
 
 export async function signIn(
   email: string,
@@ -9,16 +9,21 @@ export async function signIn(
     password: password
   }
   try {
-    const response = await fetch('http://localhost:1337/auth/local', {
-      method: 'POST',
-      headers: [['Content-Type', 'application/json']],
-      body: JSON.stringify(data)
-    }).catch((error) => {
-      console.error('Error:', error)
-    })
-    return response.json()
-  } catch (err) {
-    console.log(err)
+    const response = await API.post('auth/local', data)
+
+    return { data: response.data }
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.table(error.response.data?.data[0]?.messages)
+      return { error: error.response.data }
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error(error.request)
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error', error.message)
+    }
   }
 }
 
@@ -51,21 +56,13 @@ export async function signUp(
     password: password
   }
   try {
-    const response = await axios.post(
-      'http://localhost:1337/auth/local/register',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    const response = await API.post('auth/local/register', data)
     !response.data && console.log('from strapi')
     return response.data
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
-      console.table(error.response.data.data[0].messages)
+      console.table(error.response.data?.data[0]?.messages)
     } else if (error.request) {
       // The request was made but no response was received
       console.log(error.request)

@@ -24,7 +24,10 @@
     "start": "next start",
     "type-check": "tsc",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "proxy":"cloud_sql_proxy.exe -instances=vd-shop-project:us-central1:vd-sh-postgre=tcp:5432 psql -U -h 127.0.0.1",
+    "check-proxy":"netstat -aof | findstr :5432",
+    "kill-proxy-task":"taskkill /F /PID"
   },
   "devDependencies": {
     "@types/next": "latest",

@@ -19,7 +19,7 @@ const persistConfig = {
   whitelist: ['user'] // place to select which state you want to persist
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer as any)
 
 const bindMiddleware = (middleware: any) => {
   if (process.env.NODE_ENV !== 'production') {
