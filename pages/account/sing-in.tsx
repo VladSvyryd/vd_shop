@@ -3,9 +3,6 @@ import { connect, useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
@@ -21,7 +18,12 @@ import { User } from '../../interfaces/userTypes'
 import { RootState } from '../../redux/reducer/root'
 import { wrapper } from '../../redux/store'
 import { useRouter } from 'next/router'
-
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import { CustomInput } from '../../components/CustomInput'
+import { IconButton, InputAdornment } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -44,13 +46,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3)
   }
 }))
-
+type UserLogin = {
+  email: string
+  password: string
+}
 function SignIn() {
   const dispatch = useDispatch()
   const classes = useStyles()
-  let [email, setEmail] = useState('')
-  let [password, setPassword] = useState('')
+  const initialUser = { email: '', password: '' }
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
   const history = useRouter()
 
   const handleGoogleAuth = useCallback(async () => {
@@ -60,7 +65,7 @@ function SignIn() {
     }
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (email: string, password: string) => {
     let { data, error } = await signIn(email, password)
 
     if (data) {
@@ -86,57 +91,93 @@ function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        {email}
-        {password}
+        <Formik
+          initialValues={initialUser}
+          validationSchema={Yup.object({
+            email: Yup.string()
+              .email('Invalid email address')
+              .required('Email is required'),
+            password: Yup.string()
+              .min(
+                8,
+                'Password is too short - should be 8 digits minimum.'
+              )
+              .matches(
+                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
+                'Password has to have at least 6 letters, one numeric digit, one uppercase and one lowercase letter.'
+              )
+              .required('Password is required')
+          })}
+          onSubmit={({ email, password }) => {
+            handleSubmit(email, password)
+          }}
+          validateOnChange={false}
+        >
+          {(props) => (
+            <Form>
+              <CustomInput
+                label='Email'
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                name='email'
+                autoComplete='email'
+                type='text'
+                disabled={props.isSubmitting}
+              />
+              <CustomInput
+                label='Password'
+                variant='outlined'
+                margin='normal'
+                type={passwordVisible ? 'text' : 'password'}
+                required
+                fullWidth
+                name='password'
+                autoComplete='current-password'
+                disabled={props.isSubmitting}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        aria-label='toggle password visibility'
+                        onClick={() =>
+                          setPasswordVisible(!passwordVisible)
+                        }
+                        edge='end'
+                      >
+                        {passwordVisible ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <Button
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={classes.submit}
+                disabled={props.isSubmitting || !props.isValid}
+                type='submit'
+              >
+                Sign In
+              </Button>
+            </Form>
+          )}
+        </Formik>
         <form className={classes.form} noValidate>
-          <TextField
-            error={!!errorMessage}
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='email'
-            name='email'
-            value={email}
-            autoComplete='email'
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-            // InputProps={{
-            // 	onChange:(e)=>setEmail(e.target.value)
-            // }}
-          />
-          <TextField
-            error={!!errorMessage}
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            value={password}
-            autoComplete='current-password'
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}
             label='Remember me'
-          />
+          /> */}
           <Typography variant='subtitle2' color='error'>
             {errorMessage}
           </Typography>
 
-          <Button
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            onClick={() => handleSubmit()}
-          >
-            Sign In
-          </Button>
           <Button
             fullWidth
             variant='contained'
