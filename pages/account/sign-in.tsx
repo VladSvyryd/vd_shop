@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { signIn, signInWithGoogle } from '../../services/auth'
+import { signIn } from '../../services/auth'
 import { setCookie } from '../../services/cookie'
 import Copyright from '../../components/Copyright'
 import { addUser } from '../../redux/actions/userAction'
@@ -18,12 +16,13 @@ import { User } from '../../interfaces/userTypes'
 import { RootState } from '../../redux/reducer/root'
 import { wrapper } from '../../redux/store'
 import { useRouter } from 'next/router'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import { CustomInput } from '../../components/CustomInput'
 import { IconButton, InputAdornment } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -46,10 +45,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3)
   }
 }))
-type UserLogin = {
-  email: string
-  password: string
-}
+
 function SignIn() {
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -57,16 +53,10 @@ function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
   const history = useRouter()
-
-  const handleGoogleAuth = useCallback(async () => {
-    let user = await signInWithGoogle()
-    if (user) {
-      setCookie('vd_shop_jwt', user.jwt, 1)
-    }
-  }, [])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (email: string, password: string) => {
-    let { data, error } = await signIn(email, password)
+    const { data, error } = await signIn(email, password)
 
     if (data) {
       let user: User = {
@@ -85,6 +75,8 @@ function SignIn() {
   return (
     <Container component='main' maxWidth='xs'>
       <div className={classes.paper}>
+        <LoadingSpinner isLoading={loading} />
+
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -108,8 +100,11 @@ function SignIn() {
               )
               .required('Password is required')
           })}
-          onSubmit={({ email, password }) => {
+          onSubmit={(values, actions) => {
+            const { email, password } = values
+            const { setSubmitting } = actions
             handleSubmit(email, password)
+            setSubmitting(false)
           }}
           validateOnChange={false}
         >
@@ -156,12 +151,13 @@ function SignIn() {
                   )
                 }}
               />
+              {errorMessage}
               <Button
                 fullWidth
                 variant='contained'
                 color='primary'
                 className={classes.submit}
-                disabled={props.isSubmitting || !props.isValid}
+                disabled={props.isSubmitting}
                 type='submit'
               >
                 Sign In
@@ -169,37 +165,6 @@ function SignIn() {
             </Form>
           )}
         </Formik>
-        <form className={classes.form} noValidate>
-          {/* <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          /> */}
-          <Typography variant='subtitle2' color='error'>
-            {errorMessage}
-          </Typography>
-
-          <Button
-            fullWidth
-            variant='contained'
-            color='secondary'
-            className={classes.submit}
-            onClick={handleGoogleAuth}
-          >
-            With Google
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href='#' variant='body2'>
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href='/account/sing-up/' variant='body2'>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
       </div>
       <Box mt={8}>
         <Copyright />

@@ -49,7 +49,7 @@ export async function signUp(
   username: string,
   email: string,
   password: string
-) {
+): Promise<any> {
   const data = {
     username: username,
     email: email,
@@ -58,11 +58,12 @@ export async function signUp(
   try {
     const response = await API.post('auth/local/register', data)
     !response.data && console.log('from strapi')
-    return response.data
+    return { data: response.data }
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       console.table(error.response.data?.data[0]?.messages)
+      return { error: error.response.data }
     } else if (error.request) {
       // The request was made but no response was received
       console.log(error.request)
