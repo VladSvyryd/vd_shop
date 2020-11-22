@@ -13,7 +13,7 @@ import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 import { useRouter } from 'next/router'
 import { addUser } from '../../redux/actions/userAction'
 import { useDispatch } from 'react-redux'
-import { Form, Formik, useFormikContext } from 'formik'
+import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { CustomInput } from '../../components/CustomInput'
 import { IconButton, InputAdornment } from '@material-ui/core'
@@ -91,7 +91,7 @@ export default function SignUp() {
               .required('Email is required'),
             password: Yup.string()
               .min(
-                8,
+                6,
                 'Password is too short - should be 8 digits minimum.'
               )
               .matches(

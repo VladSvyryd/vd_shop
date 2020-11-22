@@ -29,7 +29,7 @@
     "build-storybook": "build-storybook",
     "proxy": "cloud_sql_proxy.exe -instances=vd-shop-project:us-central1:vd-sh-postgre=tcp:5432 psql -U -h 127.0.0.1",
     "check-proxy": "netstat -aof | findstr :5432",
-    "kill-proxy-task": "taskkill /F /PID"
+    "kill": "taskkill /F /PID"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.0.21",

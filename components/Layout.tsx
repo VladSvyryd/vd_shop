@@ -6,7 +6,8 @@ import { RootState } from '../redux/reducer/root'
 import { bindActionCreators } from 'redux'
 import { deleteUser } from '../redux/actions/userAction'
 import { useRouter } from 'next/router'
-import { Button } from '@material-ui/core'
+import { Button, Menu } from '@material-ui/core'
+import Login from './Login'
 
 type Props = {
   children?: ReactNode
@@ -25,6 +26,7 @@ const Layout = ({
     dispatch(deleteUser())
     history.push('/account/sign-in')
   }
+
   return (
     <div>
       <Head>
@@ -54,8 +56,11 @@ const Layout = ({
               <a>Sing In</a>
             </Link>
           ) : (
-            <Button onClick={() => handleLogout()}>Log out</Button>
+            <Button tabIndex={-1} onClick={() => handleLogout()}>
+              Log out
+            </Button>
           )}
+          <Login />
         </nav>
       </header>
       {children}

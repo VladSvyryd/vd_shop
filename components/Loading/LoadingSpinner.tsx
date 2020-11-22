@@ -1,15 +1,18 @@
 import React, { FC } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const LoadingSpinner: FC<{ isLoading: boolean }> = ({ isLoading }) => {
+const LoadingSpinner: FC<{ isLoading: boolean; local?: boolean }> = ({
+  isLoading,
+  local = false
+}) => {
   return isLoading ? (
     <div
       style={{
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        width: `${!!local ? '100%' : '100vw'}`,
+        height: `${!!local ? '100%' : '100vh'}`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

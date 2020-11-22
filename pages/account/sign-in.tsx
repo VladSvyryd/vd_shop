@@ -16,13 +16,20 @@ import { User } from '../../interfaces/userTypes'
 import { RootState } from '../../redux/reducer/root'
 import { wrapper } from '../../redux/store'
 import { useRouter } from 'next/router'
-import { Formik, Form, useFormikContext } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { CustomInput } from '../../components/CustomInput'
-import { IconButton, InputAdornment } from '@material-ui/core'
+import {
+  Divider,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Link
+} from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
+import MoodIcon from '@material-ui/icons/Mood'
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
   gbutton: {
     marginTop: theme.spacing(3)
+  },
+  loginButton: {
+    width: 256,
+    justifyContent: 'space-between',
+    padding: '8px 15px'
   }
 }))
 
@@ -56,8 +68,8 @@ function SignIn() {
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (email: string, password: string) => {
+    setLoading(true)
     const { data, error } = await signIn(email, password)
-
     if (data) {
       let user: User = {
         email: data.user.email,
@@ -70,6 +82,7 @@ function SignIn() {
       console.log(error)
       setErrorMessage(error.data[0].messages[0].message)
     }
+    setLoading(false)
   }
 
   return (
@@ -83,88 +96,148 @@ function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <Formik
-          initialValues={initialUser}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email('Invalid email address')
-              .required('Email is required'),
-            password: Yup.string()
-              .min(
-                8,
-                'Password is too short - should be 8 digits minimum.'
-              )
-              .matches(
-                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
-                'Password has to have at least 6 letters, one numeric digit, one uppercase and one lowercase letter.'
-              )
-              .required('Password is required')
-          })}
-          onSubmit={(values, actions) => {
-            const { email, password } = values
-            const { setSubmitting } = actions
-            handleSubmit(email, password)
-            setSubmitting(false)
-          }}
-          validateOnChange={false}
-        >
-          {(props) => (
-            <Form>
-              <CustomInput
-                label='Email'
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                name='email'
-                autoComplete='email'
-                type='text'
-                disabled={props.isSubmitting}
-              />
-              <CustomInput
-                label='Password'
-                variant='outlined'
-                margin='normal'
-                type={passwordVisible ? 'text' : 'password'}
-                required
-                fullWidth
-                name='password'
-                autoComplete='current-password'
-                disabled={props.isSubmitting}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={() =>
-                          setPasswordVisible(!passwordVisible)
-                        }
-                        edge='end'
-                      >
-                        {passwordVisible ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
+        <Grid container spacing={3}>
+          <Grid item>
+            <Formik
+              initialValues={initialUser}
+              validationSchema={Yup.object({
+                email: Yup.string()
+                  .email('Invalid email address')
+                  .required('Email is required'),
+                password: Yup.string()
+                  .min(
+                    6,
+                    'Password is too short - should be 8 digits minimum.'
                   )
-                }}
-              />
-              {errorMessage}
+                  .matches(
+                    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
+                    'Password has to have at least 6 letters, one numeric digit, one uppercase and one lowercase letter.'
+                  )
+                  .required('Password is required')
+              })}
+              onSubmit={(values, actions) => {
+                const { email, password } = values
+                const { setSubmitting } = actions
+                handleSubmit(email, password)
+                setSubmitting(false)
+              }}
+              validateOnChange={false}
+            >
+              {(props) => (
+                <Form>
+                  <CustomInput
+                    label='Email'
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name='email'
+                    autoComplete='email'
+                    type='text'
+                    disabled={props.isSubmitting}
+                  />
+                  <CustomInput
+                    label='Password'
+                    variant='outlined'
+                    margin='normal'
+                    type={passwordVisible ? 'text' : 'password'}
+                    required
+                    fullWidth
+                    name='password'
+                    autoComplete='current-password'
+                    disabled={props.isSubmitting}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle password visibility'
+                            onClick={() =>
+                              setPasswordVisible(!passwordVisible)
+                            }
+                            edge='end'
+                          >
+                            {passwordVisible ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <Typography color='error'>{errorMessage}</Typography>
+                  <Button
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                    disabled={props.isSubmitting}
+                    type='submit'
+                  >
+                    Sign In
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Grid>
+          <Grid
+            container
+            item
+            direction='row'
+            justify='center'
+            alignContent='center'
+            alignItems='center'
+          >
+            <Grid item xs={5}>
+              <Divider />
+            </Grid>
+            <Grid container justify='center' item xs={2}>
+              <Box component='span'>or</Box>
+            </Grid>
+            <Grid item xs={5}>
+              <Divider />
+            </Grid>
+          </Grid>
+          <Grid container item spacing={2} justify='center'>
+            <Grid item>
               <Button
-                fullWidth
-                variant='contained'
-                color='primary'
-                className={classes.submit}
-                disabled={props.isSubmitting}
-                type='submit'
+                color='default'
+                variant='outlined'
+                startIcon={<MoodIcon />}
+                className={classes.loginButton}
               >
-                Sign In
+                Continue with Google
               </Button>
-            </Form>
-          )}
-        </Formik>
+            </Grid>
+            <Grid item>
+              <Button
+                color='default'
+                variant='outlined'
+                startIcon={<MoodIcon />}
+                className={classes.loginButton}
+              >
+                Continue with Facebook
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                color='default'
+                variant='outlined'
+                startIcon={<MoodIcon />}
+                className={classes.loginButton}
+              >
+                Continue with Github
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item container spacing={1} justify='center'>
+            <Grid item>Don't have an account?</Grid>
+            <Grid item>
+              <Link href='/account/sign-up'>Create an account</Link>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
       <Box mt={8}>
         <Copyright />
