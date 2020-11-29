@@ -6,8 +6,9 @@ import { RootState } from '../redux/reducer/root'
 import { bindActionCreators } from 'redux'
 import { deleteUser } from '../redux/actions/userAction'
 import { useRouter } from 'next/router'
-import { Button, Menu } from '@material-ui/core'
 import Login from './Login'
+import AccountMenu from './AccountMenu'
+import { ExampleComponent } from 'vd-shop-comp'
 
 type Props = {
   children?: ReactNode
@@ -50,17 +51,7 @@ const Layout = ({
           <Link href='/api/products'>
             <a>Products API</a>
           </Link>
-          |{' '}
-          {!user ? (
-            <Link href='/account/sign-in'>
-              <a>Sing In</a>
-            </Link>
-          ) : (
-            <Button tabIndex={-1} onClick={() => handleLogout()}>
-              Log out
-            </Button>
-          )}
-          <Login />
+          | {!user ? <Login /> : <AccountMenu />}
         </nav>
       </header>
       {children}
@@ -68,6 +59,7 @@ const Layout = ({
         <hr />
         <span>I'm here to stay (Footer)</span>
       </footer>
+      <ExampleComponent text='Test' />
     </div>
   )
 }

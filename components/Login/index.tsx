@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Avatar from '@material-ui/core/Avatar'
@@ -115,13 +115,18 @@ function Login() {
     }
     setLoading(false)
   }
+
+  const switchLogin = (handleReset: any) => {
+    if (typeOfMenu) {
+      handleReset({ values: initialCreateUserData })
+    } else {
+      handleReset({ values: initialLoginUserData })
+    }
+    setTypeOfMenu(!typeOfMenu)
+  }
   return (
     <>
-      {!user ? (
-        <Button onClick={handleClick}>Login</Button>
-      ) : (
-        <Button onClick={handleClick}>Account</Button>
-      )}
+      <Button onClick={handleClick}>Login</Button>
       <Menu
         id='simple-menu'
         anchorEl={anchorEl}
@@ -130,8 +135,8 @@ function Login() {
         onClose={handleClose}
         className={clsx(classes.darkBackground)}
       >
-        <LoadingSpinner isLoading={loading} local />
         <Grid container className={classes.paper}>
+          <LoadingSpinner isLoading={loading} local />
           <Grid container spacing={3}>
             {typeOfMenu ? (
               <Grid container spacing={3}>
@@ -186,6 +191,7 @@ function Login() {
                           autoComplete='email'
                           type='text'
                           disabled={props.isSubmitting}
+                          autoFocus
                         />
                         <CustomInput
                           label='Password'
@@ -196,7 +202,6 @@ function Login() {
                           fullWidth
                           name='password'
                           autoComplete='current-password'
-                          disabled={props.isSubmitting}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position='end'>
@@ -230,6 +235,19 @@ function Login() {
                         >
                           Sign In
                         </Button>
+                        <Grid item container spacing={1} justify='center'>
+                          <Grid item>Don't have an account?</Grid>
+                          <Grid item>
+                            <Link
+                              component='span'
+                              onClick={() =>
+                                switchLogin(props.handleReset)
+                              }
+                            >
+                              Create an account
+                            </Link>
+                          </Grid>
+                        </Grid>
                       </Form>
                     )}
                   </Formik>
@@ -296,6 +314,7 @@ function Login() {
                           autoComplete='name'
                           type='text'
                           disabled={props.isSubmitting}
+                          autoFocus
                         />
                         <CustomInput
                           label='Email'
@@ -349,6 +368,19 @@ function Login() {
                         >
                           Sign up
                         </Button>
+                        <Grid item container spacing={1} justify='center'>
+                          <Grid item>Already have an account?</Grid>
+                          <Grid item>
+                            <Link
+                              component='span'
+                              onClick={() =>
+                                switchLogin(props.handleReset)
+                              }
+                            >
+                              Log in now
+                            </Link>
+                          </Grid>
+                        </Grid>
                       </Form>
                     )}
                   </Formik>
@@ -405,31 +437,7 @@ function Login() {
                 </Button>
               </Grid>
             </Grid>
-            {!typeOfMenu ? (
-              <Grid item container spacing={1} justify='center'>
-                <Grid item>Already have an account?</Grid>
-                <Grid item>
-                  <Link
-                    component='span'
-                    onClick={() => setTypeOfMenu(!typeOfMenu)}
-                  >
-                    Log in now
-                  </Link>
-                </Grid>
-              </Grid>
-            ) : (
-              <Grid item container spacing={1} justify='center'>
-                <Grid item>Don't have an account?</Grid>
-                <Grid item>
-                  <Link
-                    component='span'
-                    onClick={() => setTypeOfMenu(!typeOfMenu)}
-                  >
-                    Create an account
-                  </Link>
-                </Grid>
-              </Grid>
-            )}
+
             <Grid item>
               <Copyright />
             </Grid>
