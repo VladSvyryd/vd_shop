@@ -8,7 +8,6 @@ import { deleteUser } from '../redux/actions/userAction'
 import { useRouter } from 'next/router'
 import Login from './Login'
 import AccountMenu from './AccountMenu'
-import { ExampleComponent } from 'vd-shop-comp'
 
 type Props = {
   children?: ReactNode
@@ -59,7 +58,6 @@ const Layout = ({
         <hr />
         <span>I'm here to stay (Footer)</span>
       </footer>
-      <ExampleComponent text='Test' />
     </div>
   )
 }
