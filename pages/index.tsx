@@ -12,15 +12,9 @@ import { addUser } from "../redux/actions/userAction";
 
 
 function Index({
-<<<<<<< HEAD
-  categories,
-}: {
-  categories: Array<{ id: number; name: string; information: string }>
-=======
   navLinks,
 }: {
   navLinks: Array<string>
->>>>>>> c1d0f9e74b2f827ea29fa0c19a286525651e1783
 }) {
   let user = useSelector((state: RootState) => state?.user?.user);
   let text;
@@ -33,16 +27,6 @@ function Index({
   return (
     <Layout title="Home | Next.js + TypeScript Example"  navLinks={navLinks}>
         <Box my={4}>
-<<<<<<< HEAD
-          <LineNavbar>
-            {categories.map(({id, name}) => (
-              <TextButton key={id} size="small" color="primary">
-                {name}
-              </TextButton>
-            ))}
-          </LineNavbar>
-=======
->>>>>>> c1d0f9e74b2f827ea29fa0c19a286525651e1783
           <Typography variant="h4" component="h1" gutterBottom>
             {text}
           </Typography>
@@ -59,19 +43,11 @@ function Index({
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
   let user = { email: "data.user.email", username: "data.user.username" };
   store.dispatch(addUser(user));
-<<<<<<< HEAD
-  const res = await fetch("http://localhost:1337/fr/categories/getMainCategories");
-  const categories = await res.json();
-  return {
-    props: {
-      categories,
-=======
   const res = await fetch("https://jsonplaceholder.typicode.com/albums");
   const navLinks = await res.json();
   return {
     props: {
       navLinks:navLinks.map((n:any)=>n.title.split(" ")?.[0]),
->>>>>>> c1d0f9e74b2f827ea29fa0c19a286525651e1783
     },
   };
 });
