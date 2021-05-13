@@ -15,9 +15,9 @@ import { LineNavbar, TextButton } from "vd-ui-components";
 
 
 function Index({
-  albums,
+  categories,
 }: {
-  albums: Array<{ userId: number; id: number; title: string }>
+  categories: Array<{ id: number; name: string; information: string }>
 }) {
   let user = useSelector((state: RootState) => state?.user?.user);
   let text;
@@ -32,9 +32,9 @@ function Index({
       <Layout title="Home | Next.js + TypeScript Example">
         <Box my={4}>
           <LineNavbar>
-            {albums.map(({id,title}) => (
+            {categories.map(({id, name}) => (
               <TextButton key={id} size="small" color="primary">
-                {title.split(" ")?.[0]}
+                {name}
               </TextButton>
             ))}
           </LineNavbar>
@@ -55,11 +55,11 @@ function Index({
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
   let user = { email: "data.user.email", username: "data.user.username" };
   store.dispatch(addUser(user));
-  const res = await fetch("https://jsonplaceholder.typicode.com/albums");
-  const albums = await res.json();
+  const res = await fetch("http://localhost:1337/fr/categories/getMainCategories");
+  const categories = await res.json();
   return {
     props: {
-      albums,
+      categories,
     },
   };
 });
