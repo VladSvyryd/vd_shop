@@ -29,6 +29,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
 import MoodIcon from '@material-ui/icons/Mood'
 import clsx from 'clsx'
+import { TextButton } from 'vd-ui-components'
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -126,7 +128,15 @@ function Login() {
   }
   return (
     <>
-      <Button onClick={handleClick}>Login</Button>
+      <TextButton
+      size="small"
+      color="primary"
+      startIcon={<AccountCircleOutlinedIcon />}
+      isCompact="sm"
+      onClick={handleClick}
+    >
+      LogIn
+    </TextButton>
       <Menu
         id='simple-menu'
         anchorEl={anchorEl}

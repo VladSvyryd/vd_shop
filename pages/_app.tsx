@@ -6,8 +6,9 @@ import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import theme from '../themeProvider/theme'
+import {theme} from '../themeProvider'
 import { wrapper, useStore } from '../redux/store'
+import '../css/main.css'
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props

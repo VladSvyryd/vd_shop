@@ -1,5 +1,11 @@
 {
     "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@/components/*": ["components/*"],
+        "@/assests/*": ["assets/*"],
+        "@/interfaces/*": ["interfaces/*"]
+      },
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
       "jsx": "preserve",
@@ -21,7 +27,8 @@
       "forceConsistentCasingInFileNames": true,
       "esModuleInterop": true,
       "resolveJsonModule": true,
-      "isolatedModules": true
+      "isolatedModules": true,
+    
     },
     "exclude": [
       "node_modules"
@@ -30,6 +37,7 @@
       "next-env.d.ts",
       "**/*.ts",
       "**/*.tsx"
-    ]
+    ],
+   
   }
   
