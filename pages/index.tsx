@@ -37,16 +37,19 @@ function Index({ navLinks }: { navLinks: Array<Object> }) {
   )
 }
 
-export const getStaticProps = wrapper.getStaticProps(
-  (store) => async({locale})=> {
+export const getStaticProps = wrapper.getServerSideProps(
+  (store) => async ({ locale }) => {
+    console.log(locale)
     let user = { email: 'data.user.email', username: 'data.user.username' }
     store.dispatch(addUser(user))
-    const res = await fetch(`http://localhost:1337/${locale}/categories/getMainCategories`)
-    const categories = await res?.json()
-    console.log(categories)
+    const res = await fetch('https://jsonplaceholder.typicode.com/albums')
+    const categories = await res.json()
     return {
       props: {
-        navLinks: categories?.map((n: any) => ({name:n.name, idCategory: n.idCategory}))
+        navLinks: categories.map(({ name, categoryId }: any) => ({
+          name,
+          categoryId
+        }))
       }
     }
   }
