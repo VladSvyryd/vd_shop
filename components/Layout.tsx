@@ -5,7 +5,7 @@ import { RootState } from "../redux/reducer/root";
 import { bindActionCreators } from "redux";
 import { deleteUser } from "../redux/actions/userAction";
 import { useRouter } from "next/router";
-import { Header, TextButton } from "vd-ui-components";
+import { Header, LineNavbar, TextButton } from "vd-ui-components";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import { Container } from "@material-ui/core";
@@ -14,7 +14,7 @@ import Login from "./Login";
 type Props = {
   children?: ReactNode;
   title?: string;
-  navLinks?: Array<string>;
+  navLinks?: Array<object>;
 };
 
 const Layout = ({
@@ -36,6 +36,7 @@ const Layout = ({
       color="primary"
       startIcon={<ShoppingCartOutlinedIcon />}
       isCompact="sm"
+      key="1"
     >
       Cart
     </TextButton>,
@@ -44,6 +45,7 @@ const Layout = ({
       color="primary"
       startIcon={<AccountCircleOutlinedIcon />}
       isCompact="sm"
+      key="2"
     >
       Account
     </TextButton>,
@@ -54,6 +56,7 @@ const Layout = ({
       color="primary"
       startIcon={<ShoppingCartOutlinedIcon />}
       isCompact="sm"
+      key="3"
     >
       Cart
     </TextButton>,
@@ -70,6 +73,7 @@ const Layout = ({
         <Header
           loggedInActionButtons={loggedInLinks}
           loggedOutActionButtons={loggedOutLinks}
+          navBarSection={<LineNavbar>{navLinks.map((category:any) => <TextButton key={category.idCategory}>{category.name}</TextButton>)}</LineNavbar>} 
         />
         <nav></nav>
       </header>

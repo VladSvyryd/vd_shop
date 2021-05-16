@@ -10,7 +10,7 @@ import { RootState } from '../redux/reducer/root'
 import { wrapper } from '../redux/store'
 import { addUser } from '../redux/actions/userAction'
 
-function Index({ navLinks }: { navLinks: Array<string> }) {
+function Index({ navLinks }: { navLinks: Array<Object> }) {
   let user = useSelector((state: RootState) => state?.user?.user)
   let text
   if (user) {
@@ -38,15 +38,15 @@ function Index({ navLinks }: { navLinks: Array<string> }) {
 }
 
 export const getStaticProps = wrapper.getStaticProps(
-  async ({ store, locale }) => {
-    console.log(locale)
+  (store) => async({locale})=> {
     let user = { email: 'data.user.email', username: 'data.user.username' }
     store.dispatch(addUser(user))
-    const res = await fetch('https://jsonplaceholder.typicode.com/albums')
-    const navLinks = await res.json()
+    const res = await fetch(`http://localhost:1337/${locale}/categories/getMainCategories`)
+    const categories = await res?.json()
+    console.log(categories)
     return {
       props: {
-        navLinks: navLinks.map((n: any) => n.title.split(' ')?.[0])
+        navLinks: categories?.map((n: any) => ({name:n.name, idCategory: n.idCategory}))
       }
     }
   }
