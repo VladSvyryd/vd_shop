@@ -1,8 +1,6 @@
-import { colors } from '@material-ui/core';
-
 export default {
   root: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins'
   },
   containedPrimary: {
     borderRadius: '24px',
@@ -10,10 +8,10 @@ export default {
       // changes colors for hover state
       // backgroundColor: theme.palette.secondary.main,
       // color: theme.palette.primary.dark,
-    },
+    }
   },
 
   containedSecondary: {
-    borderRadius: '24px',
-  },
-};
+    borderRadius: '24px'
+  }
+}

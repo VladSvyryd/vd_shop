@@ -2,9 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Link from '@/components/Link'
-import Copyright from '@/components/Copyright'
 import Layout from '@/components/Layout'
 import { RootState } from '../redux/reducer/root'
 import { wrapper } from '../redux/store'
@@ -22,17 +19,9 @@ function Index({ navLinks }: { navLinks: Array<Object> }) {
   return (
     <Layout
       title='Home | Next.js + TypeScript Example'
-      navLinks={navLinks}
+      navLinks={['bla', 'mla', 'dra'].map((category: any) => category)}
     >
-      <Box my={4}>
-        <Typography variant='h4' component='h1' gutterBottom>
-          {text}
-        </Typography>
-        <Link href='/about' color='secondary'>
-          Go to the about page
-        </Link>
-        <Copyright />
-      </Box>
+      <Typography>CONTENT</Typography>
     </Layout>
   )
 }
@@ -43,14 +32,9 @@ export const getStaticProps = wrapper.getServerSideProps(
     let user = { email: 'data.user.email', username: 'data.user.username' }
     store.dispatch(addUser(user))
     const res = await fetch('https://jsonplaceholder.typicode.com/albums')
-    const categories = await res.json()
+    const categories = await res?.json()
     return {
-      props: {
-        navLinks: categories.map(({ name, categoryId }: any) => ({
-          name,
-          categoryId
-        }))
-      }
+      props: { navLinks: null }
     }
   }
 )

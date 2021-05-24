@@ -3,7 +3,7 @@
       "baseUrl": ".",
       "paths": {
         "@/components/*": ["components/*"],
-        "@/assests/*": ["assets/*"],
+        "@/assets/*": ["assets/*"],
         "@/interfaces/*": ["interfaces/*"]
       },
       "allowJs": true,
@@ -28,7 +28,7 @@
       "esModuleInterop": true,
       "resolveJsonModule": true,
       "isolatedModules": true,
-    
+
     },
     "exclude": [
       "node_modules"
@@ -38,6 +38,5 @@
       "**/*.ts",
       "**/*.tsx"
     ],
-   
+
   }
-  
