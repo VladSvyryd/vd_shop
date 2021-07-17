@@ -1,33 +1,15 @@
-import React, { ReactNode } from 'react'
-import Head from 'next/head'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../redux/reducer/root'
-import { bindActionCreators } from 'redux'
-import { deleteUser } from '../redux/actions/userAction'
-import { useRouter } from 'next/router'
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import { Box, Container, Typography } from '@material-ui/core'
-import Login from './Login'
-import {
-  Footer,
-  Header,
-  LineNavbar,
-  NewsletterForm,
-  SearchForm,
-  TextButton
-} from 'vd-ui-components'
-import Facebook from '@/assets/icons/facepook.svg'
-import Twitter from '@/assets/icons/twitter.svg'
-import Instagram from '@/assets/icons/instagram.svg'
-import Youtube from '@/assets/icons/youtube.svg'
-import WiFi from '@/assets/icons/wifi.svg'
-import ApplePay from '@/assets/icons/apple_pay.svg'
-import Klarna from '@/assets/icons/klarna.svg'
-import Paypal from '@/assets/icons/paypal.svg'
-import MasterCard from '@/assets/icons/masterCard.svg'
-import Visa from '@/assets/icons/visa.svg'
-import { LinkStack } from 'vd-ui-components/dist/components/Footer'
+import React, { ReactNode } from "react";
+import Head from "next/head";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/reducer/root";
+import { bindActionCreators } from "redux";
+import { deleteUser } from "../redux/actions/userAction";
+import { useRouter } from "next/router";
+import { Header, TextButton } from "vd-ui-components";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import { Box, Container } from "@material-ui/core";
+import Login from "./Login";
 
 type Props = {
   children?: ReactNode
@@ -129,11 +111,7 @@ const Layout = ({
     <Login />
   ]
   return (
-    <Container
-      maxWidth='xl'
-      disableGutters
-      style={{ display: 'flex', flexDirection: 'column' }}
-    >
+    <Box display="flex" height="100%" flexDirection="column" maxWidth="xl" >
       <Head>
         <title>{title}</title>
         <meta charSet='utf-8' />
@@ -182,6 +160,21 @@ const Layout = ({
     </Container>
   )
 }
+      <header>
+        <Header
+          loggedInActionButtons={loggedInLinks}
+          loggedOutActionButtons={loggedOutLinks}
+        />
+        <nav></nav>
+      </header>
+      {children}
+      <footer>
+        <hr />
+        <span>I'm here to stay (Footer)</span>
+      </footer>
+    </Box>
+  );
+};
 const mapDispatchToProps = (dispatch: any) => {
   return {
     addUser: bindActionCreators(deleteUser, dispatch)
