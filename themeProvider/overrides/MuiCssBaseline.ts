@@ -12,7 +12,6 @@ export default {
       lineHeight: '25px',
       letterSpacing: '-0.05px',
       '& #__next': {
-        display: 'flex',
         height: '100%'
       }
     }
