@@ -86,19 +86,22 @@ function Login() {
   }
   const handleLoginUser = async (email: string, password: string) => {
     setLoading(true)
-    const { data, error } = await signIn(email, password)
-    if (data) {
-      let user: User = {
-        email: data.user.email,
-        username: data.user.username
-      }
-      dispatch(addUser(user))
-      setCookie('vd_shop_jwt', data.jwt, 1)
-      handleClose()
-    } else {
-      console.log(error)
-      setErrorMessage(error.data[0].messages[0].message)
-    }
+    dispatch(addUser({email:"vladonius@gmail.com",username:"Vlad"}))
+   setCookie('vd_shop_jwt', "token", 1)
+    handleClose()
+    // const signInResponse = await signIn(email, password)
+    // if (signInResponse?.data) {
+    //   let user: User = {
+    //     email: signInResponse.data.user.email,
+    //     username: signInResponse.data.user.username
+    //   }
+    //   dispatch(addUser(user))
+    //   setCookie('vd_shop_jwt', signInResponse.data.jwt, 1)
+    //   handleClose()
+    // } else {
+    //   console.log(signInResponse?.error)
+    //   setErrorMessage(signInResponse?.error.data[0].messages[0].message)
+    // }
     setLoading(false)
   }
   const handleCreateUser = async (

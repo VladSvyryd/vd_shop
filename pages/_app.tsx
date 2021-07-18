@@ -8,7 +8,6 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import {theme} from '../themeProvider'
 import { wrapper, useStore } from '../redux/store'
-import { LayoutSwitch } from '@/components/LayoutSwitch'
 import '../css/main.css'
 
 function MyApp(props: AppProps) {
@@ -41,9 +40,7 @@ function MyApp(props: AppProps) {
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-            <LayoutSwitch>
             <Component {...pageProps} />
-            </LayoutSwitch>
           </ThemeProvider>
         </React.Fragment>
       </PersistGate>

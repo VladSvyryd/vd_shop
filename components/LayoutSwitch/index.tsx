@@ -2,17 +2,19 @@ import React, { ReactElement } from 'react'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'redux/reducer/root'
+import LayoutDefault from '../Layouts/LayoutDefault'
 
 interface Props {
-    
+    layoutProps:any
 }
 
-export const  LayoutSwitch:FC<Props>=({children}): ReactElement =>{
+export const  LayoutSwitch:FC<Props>=({children,layoutProps}): ReactElement =>{
     const user = useSelector((state:RootState) => state.user)
-    console.log(user)
+     const Layout = user?LayoutDefault:LayoutDefault 
+
     return (
-        <React.Fragment>
-            {children}
-        </React.Fragment>
+        <Layout {...layoutProps}>
+            {children} 
+        </Layout>
     )
 }

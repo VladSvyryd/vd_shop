@@ -4,7 +4,8 @@
       "paths": {
         "@/components/*": ["components/*"],
         "@/assets/*": ["assets/*"],
-        "@/interfaces/*": ["interfaces/*"]
+        "@/interfaces/*": ["interfaces/*"],
+        "@/redux/*": ["redux/*"],
       },
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
